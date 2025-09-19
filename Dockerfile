@@ -1,25 +1,16 @@
-FROM node:lts-buster
+FROM node:20-bullseye-slim
 
-RUN apt-get update && \
-  apt-get install -y \
-  ffmpeg \
-  imagemagick \
-  webp && \
-  apt-get upgrade -y && \
-  npm i pm2 -g && \
-  rm -rf /var/lib/apt/lists/*
-  
-RUN git clone https://github.com/djalega8000/Zokou-2.0  /root/Zokou_BOt
-WORKDIR /root/Zokou_Bot/
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
+RUN git clone https://github.com/Ainz-devs/OVL-MD-V2.git /ovl_bot
 
-COPY package.json .
-run npm install -g npm@10.2.4
-RUN npm install pm2 -g
-RUN npm install --legacy-peer-deps
+WORKDIR /ovl_bot
 
-COPY . .
+RUN npm install
 
-EXPOSE 5000
+EXPOSE 8000
 
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
